@@ -13,7 +13,7 @@ public class GameParser
 	{
 		List<String> logs; 
 		int opcao = 0;
-		logs = Files.readAllLines(Paths.get("C:/ParserLog/Quake.log"));
+		logs = Files.readAllLines(Paths.get("C:/ParserLog/Quake.txt"));
 
 		GameLog game = new GameLog(logs);
 				List<Game> games = game.parserGames();
