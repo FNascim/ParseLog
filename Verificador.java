@@ -3,7 +3,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 public class Verificador {
-	public static void verificador (List<String> logs, Map<String, Jogadores> jogadores) {
+    public static void verificador (List<String> logs, Map<String, Jogadores> jogadores) 
+    {
 		for (String log : logs) {
 			Matcher RegJogador = Regex.getMatcherForSentence(log, "ClientUserinfoChanged");
 			if (RegJogador.matches()) {
@@ -16,7 +17,8 @@ public class Verificador {
 		}
 	}
 	
-	private static void verificadorRegistro (Matcher RegJogador, Map<String, Jogadores> jogadores) {
+    private static void verificadorRegistro (Matcher RegJogador, Map<String, Jogadores> jogadores) 
+    {
 		String jogador = RegJogador.group(3).trim();
 		String jogadorID = null;
 		String JogadorName = null;
@@ -39,46 +41,56 @@ public class Verificador {
 			JogadorName = "";
 		}
 		
-		if (jogadores.containsKey(jogadorID)) {
+        if (jogadores.containsKey(jogadorID)) 
+        {
 			Jogadores antigo = jogadores.get(jogadorID);
 			
-			if (!antigo.getNome().equals(JogadorName)) {
+            if (!antigo.getNome().equals(JogadorName)) 
+            {
 				jogadores.remove(jogadorID);
 				antigo.setID("1000" + antigo.getID());
 				jogadores.put(antigo.getID(), antigo);
 				jogadores.put(jogadorID, new Jogadores (jogadorID, JogadorName, new JogadorMortes()));
 			}
 		}
-		else {
+        else 
+        {
 			jogadores.put(jogadorID, new Jogadores(jogadorID, JogadorName, new JogadorMortes()));
 		}
 	}
 	
-	private static void verificadorMatou (Matcher Matou, Map<String, Jogadores> jogadores) {
+    private static void verificadorMatou (Matcher Matou, Map<String, Jogadores> jogadores) 
+    {
 		String jogadorMatou = Matou.group(3).trim();
 		Matcher matcherKD = Regex.createPatternForSetence("([0-9]*)\\s([0-9]*)\\s([0-9]*)(.*)", jogadorMatou);
-		if (!matcherKD.matches()) {
+        if (!matcherKD.matches()) 
+        {
 			return;
 		}
 		String idMatou = matcherKD.group(1);
 		String idMorreu = matcherKD.group(2);
 		
-		if (!idMatou.equals(idMorreu)) {
+        if (!idMatou.equals(idMorreu)) 
+        {
 			Jogadores killer = jogadores.get(idMatou);
-			if (!(killer == null)) {
+            if (!(killer == null)) 
+            {
 				killer.getJogadorMortes().Matou();
 				killer.getJogadorMortes().MorteValida();
 			}
 		}
 		
 		Jogadores killed = jogadores.get(idMorreu);
-		if (!(killed == null)) {
+        if (!(killed == null)) 
+        {
 			killed.getJogadorMortes().Morreu();
 		}
 		
-		if (idMatou.equals("1022")) {
+        if (idMatou.equals("1022")) 
+        {
 			Jogadores KilledWorld =  jogadores.get(idMorreu);
-			if (!(KilledWorld == null)) {
+            if (!(KilledWorld == null)) 
+            {
 				KilledWorld.getJogadorMortes().WorldMatou();
 			}
 		}
